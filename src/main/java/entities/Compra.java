@@ -91,5 +91,6 @@ public class Compra {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
+	
     
 }
