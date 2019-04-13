@@ -12,7 +12,7 @@ public class Tiempo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long tiempoid;
-	private Integer diasemana;
+	private String diasemana;
 	private Integer diames;
 	private String nombremes;
 	private Integer numeromes;
@@ -21,7 +21,7 @@ public class Tiempo {
 	public Tiempo() {
 		super();
 	}
-	public Tiempo(Integer diasemana, Integer diames, String nombremes, Integer numeromes, Integer anio,
+	public Tiempo(String diasemana, Integer diames, String nombremes, Integer numeromes, Integer anio,
 			Boolean esfindesemana) {
 		super();
 		this.diasemana = diasemana;
@@ -37,10 +37,10 @@ public class Tiempo {
 	public void setTiempoid(long tiempoid) {
 		this.tiempoid = tiempoid;
 	}
-	public Integer getDiasemana() {
+	public String getDiasemana() {
 		return diasemana;
 	}
-	public void setDiasemana(Integer diasemana) {
+	public void setDiasemana(String diasemana) {
 		this.diasemana = diasemana;
 	}
 	public Integer getDiames() {
