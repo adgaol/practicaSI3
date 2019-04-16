@@ -15,14 +15,14 @@ public class Cliente {
 	private String nombre;
 	private String apellido;
 	private String correo;
-	private Integer dominiocorreo;
+	private String dominiocorreo;
 	private Integer diaalta;
 	private Integer mesalta;
 	private Integer anioalta;
 	public Cliente() {
 		super();
 	}
-	public Cliente(String nombre, String apellido, String correo, Integer dominiocorreo, Integer diaalta,
+	public Cliente(String nombre, String apellido, String correo, String dominiocorreo, Integer diaalta,
 			Integer mesalta, Integer anioalta) {
 		super();
 		this.nombre = nombre;
@@ -57,10 +57,10 @@ public class Cliente {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	public Integer getDominiocorreo() {
+	public String getDominiocorreo() {
 		return dominiocorreo;
 	}
-	public void setDominiocorreo(Integer dominiocorreo) {
+	public void setDominiocorreo(String dominiocorreo) {
 		this.dominiocorreo = dominiocorreo;
 	}
 	public Integer getDiaalta() {

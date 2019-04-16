@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
+
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,24 +20,26 @@ public class Compra {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long compraid;
-	private Double importe;
-	private Double valoracion;
+	private Integer importe;
+	private Integer valoracion;
 	
-	
+	@ManyToOne
     @JoinColumn(name = "lugarid")
 	private Lugar lugar;
     @ManyToOne
     @JoinColumn(name = "productoid")
    	private  Producto producto;
+    @ManyToOne
     @JoinColumn(name = "tiempoid")
    	private Tiempo tiempo;
+    @ManyToOne
     @JoinColumn(name = "clienteid")
    	private Cliente cliente;
 	public Compra() {
 		super();
 	}
 	
-	public Compra(Double importe, Double valoracion, Lugar lugar, Producto producto, Tiempo tiempo, Cliente cliente) {
+	public Compra(Integer importe, Integer valoracion, Lugar lugar, Producto producto, Tiempo tiempo, Cliente cliente) {
 		super();
 		this.importe = importe;
 		this.valoracion = valoracion;
@@ -52,16 +55,16 @@ public class Compra {
 	public void setCompraid(long compraid) {
 		this.compraid = compraid;
 	}
-	public Double getImporte() {
+	public Integer getImporte() {
 		return importe;
 	}
-	public void setImporte(Double importe) {
+	public void setImporte(Integer importe) {
 		this.importe = importe;
 	}
-	public Double getValoracion() {
+	public Integer getValoracion() {
 		return valoracion;
 	}
-	public void setValoracion(Double valoracion) {
+	public void setValoracion(Integer valoracion) {
 		this.valoracion = valoracion;
 	}
 	public Lugar getLugar() {

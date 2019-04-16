@@ -13,6 +13,7 @@ import entities.Cliente;
 import entities.Lugar;
 import entities.Producto;
 import entities.Tiempo;
+import entities.Compra;
 
 @Component
 public class ProcessData {
@@ -24,6 +25,8 @@ public class ProcessData {
 	private ItemService servicioProducto;
 	@Autowired
 	private ClientService servicioCliente;
+	@Autowired
+	private PurchaseService servicioCompra;
 	/*@Autowired
  	private AccessService servicioAcceso;
 	@Autowired
@@ -55,11 +58,15 @@ public class ProcessData {
 	            		Integer importe=Integer.parseInt(datos[10]);
 	            		Integer valoracion=Integer.parseInt(datos[11]);
 	            		String fechaPedido=datos[12];
-	            		Integer numMoth=servicioTiempo.nameToNumMouth(mes);
-	            		String dayOfWeek=servicioTiempo.diaDeLaSemana(dia,numMoth, anio);
-	            		Tiempo tiempo=servicioTiempo.getTiempo(dia, numMoth, anio);
+	            		Integer diaPedido=Integer.parseInt(fechaPedido.split("/")[0]);
+	            		Integer mesPedido=Integer.parseInt(fechaPedido.split("/")[1]);
+	            		Integer anioPedido=Integer.parseInt(fechaPedido.split("/")[2]);
+	            		//Integer numMoth=servicioTiempo.nameToNumMounth(mes);
+	            		String nameMonth=servicioTiempo.numToNameMounth(mesPedido);
+	            		String dayOfWeek=servicioTiempo.diaDeLaSemana(diaPedido,mesPedido, anioPedido);
+	            		Tiempo tiempo=servicioTiempo.getTiempo(diaPedido,mesPedido, anioPedido);
 	            		if(tiempo==null) {
-	            			tiempo=new Tiempo(dayOfWeek, dia, mes,numMoth , anio, servicioTiempo.isWeekend(dayOfWeek));
+	            			tiempo=new Tiempo(dayOfWeek, diaPedido,nameMonth,mesPedido , anioPedido, servicioTiempo.isWeekend(dayOfWeek));
 	            		}
 	            		servicioTiempo.guardarTiempo(tiempo);
 	            		Lugar lugar =servicioLugar.getLugar(capital);
@@ -74,8 +81,132 @@ public class ProcessData {
 	            		servicioProducto.guardarProducto(producto);
 	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos);
 	            		if(cliente==null) {
-	            			cliente=new Cliente(nombre, apellidos, email, dominiocorreo, diaalta, mesalta, anioalta)
+	            			//String dominio=servicioCliente.getDominio(email);
+	            			Integer numMes=servicioCliente.nameToNumMouth(mes);
+	            			cliente=new Cliente(nombre, apellidos, "", email, dia, numMes, anio);
 	            		}
+	            		servicioCliente.guardarCliente(cliente);
+	            		Compra compra= new Compra(importe, valoracion, lugar, producto, tiempo, cliente);
+	            		servicioCompra.guardarCompra(compra);
+	            			
+	            	}
+	            	/*
+	            	String ip = resultado.split(" - -")[0];
+	            	String fecha = resultado.substring(resultado.indexOf("[")+1, resultado.indexOf("]"));
+	            	Tiempo tiempo = guardarfecha(fecha);		            	
+	            	resultado = resultado.substring(resultado.indexOf("]")+3);
+	            	
+	            	//Guarda TODOS los accesos del .log
+	            	Recursos recurso = new Recursos(resultado.substring(0, resultado.indexOf("\"")));
+	            	if (recurso.getUrl().contains("/nitflex/")){
+	            		String tipoRecurso=recurso.getUrl();
+	            		if(recurso.getUrl().contains("HTTP/"))
+	            			tipoRecurso=tipoRecurso.substring(0,tipoRecurso.indexOf("HTTP/"));
+	            		tipoRecurso=tipoRecurso.substring(tipoRecurso.lastIndexOf("/"));
+	            		if(tipoRecurso.contains(".")){
+	            			tipoRecurso=tipoRecurso.substring(tipoRecurso.lastIndexOf("."));
+	            			if(tipoRecurso.contains("?"))
+	            				tipoRecurso=tipoRecurso.substring(0,tipoRecurso.indexOf("?"));
+	            		}else{
+	            			tipoRecurso="Otros";
+	            		}
+	            		recurso.setUrl(tipoRecurso);
+	            		
+	            		resultado = resultado.substring(resultado.indexOf("\"")+1);
+		            	
+		            	String numeros = resultado.substring(1,resultado.indexOf("\"")-1);
+		            	resultado = resultado.substring(resultado.indexOf("\"")+1);
+		            	
+		            	String desde = resultado.substring(0,resultado.indexOf("\""));
+		            	resultado = resultado.substring(resultado.indexOf("\"")+3);
+		            	if(desde.length()>254)
+		            		desde="-";
+
+		            	String buscador = resultado.substring(0,resultado.indexOf("\""));
+		            	Datos datos = new Datos(ip,numeros,desde,buscador);
+		            	
+		            	
+		            	//Comprueba si existe el dato de tiempo y obtiene su id
+		            	long l = servicioTiempo.comprobarTiempo(tiempo);
+		            	tiempo.setIdt(l);
+		            	
+		            	//Comprueba si existe el dato de recursos y obtiene su id
+		            	long r = servicioRecurso.comprobarRecurso(recurso);
+		            	recurso.setIdr(r);
+		            			            	
+		            	servicioDatos.guardarDatos(datos); 
+		            	
+		            	Accesos acceso = new Accesos(recurso, tiempo);
+		            	servicioAcceso.guardarAcceso(acceso);
+	            	}//if */	               
+	            	contAccT++;
+	            }//while
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+		contAccT = 0;
+		try (BufferedReader br = new BufferedReader(new FileReader("Practica_3_SSII_hechos2.csv"))) { //mas-accesos-servidor-nitflex.log
+	            String line;	            
+	            while ((line = br.readLine()) != null) {  //Vamos linea a linea separando la informacion	
+	            	
+	            	String resultado = line;
+	            	if(contAccT>0) {
+	            		String[] datos=resultado.split(";");
+	            		String nombreApellido=datos[0];
+	            		String email=datos[1];
+	            		String fechaAlta=datos[2];
+	            		String pais=datos[3];
+	            		String capital=datos[4];
+	            		String item=datos[5];
+	            		String descripcion=datos[6];
+	            		Integer importe=Integer.parseInt(datos[7]);
+	            		Integer valoracion=Integer.parseInt(datos[8]);
+	            		String fechaPedido=datos[9];
+	            		Integer diaPedido=Integer.parseInt(fechaPedido.split("/")[0]);
+	            		Integer mesPedido=Integer.parseInt(fechaPedido.split("/")[1]);
+	            		Integer anioPedido=Integer.parseInt(fechaPedido.split("/")[2]);
+	            		//Integer numMoth=servicioTiempo.nameToNumMounth(mes);
+	            		String nameMonth=servicioTiempo.numToNameMounth(mesPedido);
+	            		String dayOfWeek=servicioTiempo.diaDeLaSemana(diaPedido,mesPedido, anioPedido);
+	            		Tiempo tiempo=servicioTiempo.getTiempo(diaPedido,mesPedido, anioPedido);
+	            		if(tiempo==null) {
+	            			tiempo=new Tiempo(dayOfWeek, diaPedido,nameMonth,mesPedido , anioPedido, servicioTiempo.isWeekend(dayOfWeek));
+	            		}
+	            		servicioTiempo.guardarTiempo(tiempo);
+	            		Lugar lugar =servicioLugar.getLugar(capital);
+	            		if(lugar==null) {
+	            			lugar =new Lugar(capital,pais,0);
+	            		}
+	            		else {
+	            			lugar.setPais(pais);
+	            		}
+	            		servicioLugar.guardarLugar(lugar);
+	            		Producto producto=servicioProducto.getProducto(item);
+	            		if(producto==null) {
+	            			producto=new Producto(item, descripcion);
+	            		}
+	            		servicioProducto.guardarProducto(producto);
+	            		String apellidos=servicioCliente.getApellidoSolo(nombreApellido);
+	            		String nombre=servicioCliente.getNombreSolo(nombreApellido);
+	            		String dominio="";
+	            		if(!email.isEmpty())
+	            			dominio=servicioCliente.getDominio(email);
+	            		Integer dia=servicioCliente.getDiaSolo(fechaAlta);
+	            		Integer mes=servicioCliente.getMesSolo(fechaAlta);
+	            		Integer anio=servicioCliente.getAnioSolo(fechaAlta);
+	            		
+	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos);
+	            		if(cliente==null) {
+	            			//String dominio=servicioCliente.getDominio(email);
+	            			
+	            			cliente=new Cliente(nombre, apellidos, email, dominio, dia, mes, anio);
+	            		}
+	            		else {
+	            			cliente.setCorreo(email);
+	            		}
+	            		servicioCliente.guardarCliente(cliente);
+	            		Compra compra= new Compra(importe, valoracion, lugar, producto, tiempo, cliente);
+	            		servicioCompra.guardarCompra(compra);
 	            			
 	            	}
 	            	/*

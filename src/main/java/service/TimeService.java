@@ -30,35 +30,66 @@ public class TimeService extends Tiempo {
 		
 		}
 	}*/
-	public Integer nameToNumMouth(String name) {
+	public Integer nameToNumnMouth(String name) {
 		switch(name){
-		case "Enero":
+		case "enero":
 			return 1;
-		case "Febrero":
+		case "febrero":
 			return 2;
-		case "Marzo":
+		case "marzo":
 			return 3;
-		case "Abril":
+		case "abril":
 			return 4;
-		case "Mayo":
+		case "mayo":
 			return 5;
-		case "Junio":
+		case "junio":
 			return 6;
-		case "Julio":
+		case "julio":
 			return 7;
-		case "Agosto":
+		case "agosto":
 			return 8;
-		case "Septiembre":
+		case "septiembre":
 			return 9;
-		case "Octubre":
+		case "octubre":
 			return 10;
-		case "Noviembre":
+		case "noviembre":
 			return 11;
 		case "diciembre":
 			return 12;
 		
 		default:
 			return -1;
+		}
+	}
+	public String numToNameMounth(Integer num) {
+		switch(num){
+		case 1:
+			return "enero";
+		case 2:
+			return "febrero";
+		case 3:
+			return "marzo";
+		case 4:
+			return "abril";
+		case 5:
+			return "mayo";
+		case 6:
+			return "junio";
+		case 7:
+			return "julio";
+		case 8:
+			return "agosto";
+		case 9:
+			return "septiembre";
+		case 10:
+			return "octubre";
+		case 11:
+			return "noviembre";
+		case 12:
+			return "diciembre";
+		
+		default:
+			return "error";
 		}
 	}
 	public String diaDeLaSemana(Integer dia, Integer mes , Integer anio) {
@@ -78,7 +109,7 @@ public class TimeService extends Tiempo {
 	}
 	public Boolean isWeekend(String dia) {
 		Boolean es=false;
-		if(dia.equals("Sabado")||dia.equals("Domingo")) {
+		if(dia.equals("SATURDAY")||dia.equals("SUNDAY")) {
 			es=true;
 		}
 		return es;
