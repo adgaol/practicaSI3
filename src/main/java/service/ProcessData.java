@@ -79,10 +79,11 @@ public class ProcessData {
 	            			producto=new Producto(item, descripcion);
 	            		}
 	            		servicioProducto.guardarProducto(producto);
-	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos);
+	            		Integer numMes=servicioCliente.nameToNumMouth(mes);
+	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos,dia,numMes);
 	            		if(cliente==null) {
 	            			//String dominio=servicioCliente.getDominio(email);
-	            			Integer numMes=servicioCliente.nameToNumMouth(mes);
+	            			
 	            			cliente=new Cliente(nombre, apellidos, null, email, dia, numMes, anio);
 	            		}
 	            		servicioCliente.guardarCliente(cliente);
@@ -155,7 +156,7 @@ public class ProcessData {
 	            		String nombreApellido=datos[0];
 	            		String email=datos[1];
 	            		String fechaAlta=datos[2];
-	            		String pais=datos[3];
+	            		String pais=datos[3].replaceAll("_", " ");
 	            		String capital=datos[4];
 	            		String item=datos[5];
 	            		String descripcion=datos[6];
@@ -195,7 +196,7 @@ public class ProcessData {
 	            		Integer mes=servicioCliente.getMesSolo(fechaAlta);
 	            		Integer anio=servicioCliente.getAnioSolo(fechaAlta);
 	            		
-	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos);
+	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos,dia,mes);
 	            		if(cliente==null) {
 	            			//String dominio=servicioCliente.getDominio(email);
 	            			
@@ -276,7 +277,7 @@ public class ProcessData {
 	            		Integer diaAlta=Integer.parseInt(datos[2]);
 	            		String mesAlta=datos[3];
 	            		Integer anioAlta=Integer.parseInt(datos[4]);
-	            		String pais=datos[5];
+	            		String pais=datos[5].replaceAll("_", " ");
 	            		String capital=datos[6];
 	            		Integer poblacion=Integer.parseInt(datos[7]);
 	            		String item=datos[8];
@@ -315,7 +316,7 @@ public class ProcessData {
 	            		Integer mes=servicioCliente.nameToNumMouth(mesAlta);
 	            		//Integer anio=servicioCliente.getAnioSolo(fechaAlta);
 	            		
-	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos);
+	            		Cliente cliente=servicioCliente.getCliente(nombre, apellidos,diaAlta,mes);
 	            		if(cliente==null) {
 	            			//String dominio=servicioCliente.getDominio(email);
 	            			

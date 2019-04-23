@@ -15,13 +15,13 @@ public class ClientService extends Cliente {
 	public void guardarCliente(Cliente c){
 		repositorio.save(c);
 	}
-	public Cliente getCliente(String nombre , String apellido) {
-		return repositorio.findByNombreAndApellido(nombre, apellido);
+	public Cliente getCliente(String nombre , String apellido,Integer diaalta,Integer mesalta) {
+		return repositorio.findByNombreAndApellidoAndDiaaltaAndMesalta(nombre, apellido,diaalta,mesalta);
 		
 	}
 	public String getNombreSolo(String nombreApellido) {
 		if(nombreApellido.contains(",")) {
-			return nombreApellido.split(",")[1];
+			return nombreApellido.split(", ")[1];
 		}
 		else
 			return nombreApellido.split(" ")[0];

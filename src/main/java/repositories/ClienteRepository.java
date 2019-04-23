@@ -9,5 +9,5 @@ import entities.Producto;
 
 @RepositoryRestResource(collectionResourceRel = "cliente", path = "cliente")
 public interface ClienteRepository extends CrudRepository<Cliente,Long>{
-	Cliente findByNombreAndApellido(@Param("nombre") String nombre,@Param("apellido") String apellido);
+	Cliente findByNombreAndApellidoAndDiaaltaAndMesalta(@Param("nombre") String nombre,@Param("apellido") String apellido,@Param("diaalta") Integer diaAlta,@Param("mesalta") Integer mesalta);
 }
