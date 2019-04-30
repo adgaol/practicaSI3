@@ -70,7 +70,7 @@ public class RecomenderServicie {
 	UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
 	UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
 	List<RecommendedItem> recommendations=null;
-	File result=new File("./recomendaciones.csv");
+	File result=new File("./recomendaciones.txt");
 	BufferedWriter output = null;
 	try {
 		       
