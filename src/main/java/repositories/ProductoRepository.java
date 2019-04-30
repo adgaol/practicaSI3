@@ -8,5 +8,5 @@ import entities.Producto;
 @RepositoryRestResource(collectionResourceRel = "producto", path = "producto")
 public interface ProductoRepository extends CrudRepository<Producto,Long>{
 	Producto findByNombre(@Param("nombre") String nombre);
-
+	Producto findByProductoid(@Param("id") Long id);
 }

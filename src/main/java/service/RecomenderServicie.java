@@ -1,6 +1,8 @@
 package service;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +29,9 @@ import org.springframework.stereotype.Component;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import entities.Cliente;
+import entities.Compra;
 import repositories.ClienteRepository;
+import repositories.ProductoRepository;
 
 @Component
 public class RecomenderServicie {
@@ -35,6 +39,8 @@ public class RecomenderServicie {
 	private PurchaseService servicioCompra;
 	@Autowired
 	private ClienteRepository repositorio;
+	@Autowired
+	private ProductoRepository repositorioItem;
 	@PostConstruct
 	//Abrimos el archivo
 	public void process(){
@@ -64,16 +70,45 @@ public class RecomenderServicie {
 	UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
 	UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
 	List<RecommendedItem> recommendations=null;
-	for(Cliente cliente:repositorio.findAll()) {
-		try {
-			recommendations = recommender.recommend(cliente.getClienteid(), 3);
-		} catch (TasteException e) {
+	File result=new File("./recomendaciones.csv");
+	BufferedWriter output = null;
+	try {
+		       
+	    output = new BufferedWriter(new FileWriter(result));
+	    for(Cliente cliente:repositorio.findAll()) {
+	    	try {
+	    		recommendations = recommender.recommend(cliente.getClienteid(), 3);
+	    	} catch (TasteException e) {
+			// TODO Auto-generated catch block
+	    		e.printStackTrace();
+	    	}
+		
+			output.write(cliente.getNombre()+" "+cliente.getApellido());
+			
+		    for (RecommendedItem recommendation : recommendations) {
+		    	System.out.println(recommendation);
+		
+		   
+		    	output.write(","+repositorioItem.findByProductoid(recommendation.getItemID()).getNombre()+","+recommendation.getValue());
+		    	
+		
+			
+		    }
+		    	output.newLine();
+	    }
+	 } catch ( IOException e ) {
+	    e.printStackTrace();
+	 } finally {
+	  if ( output != null ) {
+	    try {
+			output.close();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for (RecommendedItem recommendation : recommendations) {
-		  System.out.println(recommendation);
-		}
+	  }
 	}
 	}
+	
+	
 }
